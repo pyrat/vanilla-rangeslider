@@ -1,4 +1,4 @@
-const IonRangeSlider = function (element, initOptions= {}) {
+const IonRangeSlider = function (element, initOptions = {}) {
     let input = element;
     let options = initOptions;
     let calc_count = 0;
@@ -43,7 +43,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
         shad_to: null,
         edge: null,
         grid: null,
-        grid_labels: []
+        grid_labels: [],
     };
 
     // storage for measure variables
@@ -79,7 +79,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
         big: [],
         big_w: [],
         big_p: [],
-        big_x: []
+        big_x: [],
     };
 
     // storage for labels measure variables
@@ -99,7 +99,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
         p_to_fake: 0,
         p_to_left: 0,
         p_single_fake: 0,
-        p_single_left: 0
+        p_single_left: 0,
     };
 
     // default config
@@ -163,13 +163,14 @@ const IonRangeSlider = function (element, initOptions= {}) {
         onStart: null,
         onChange: null,
         onFinish: null,
-        onUpdate: null
+        onUpdate: null,
     };
-
 
     // check if base element is input
     if (input.nodeName !== "INPUT") {
-        console && console.warn && console.warn("Base element should be <input>!", input);
+        console &&
+            console.warn &&
+            console.warn("Base element should be <input>!", input);
     }
 
     // config from data-attributes extends js config
@@ -228,21 +229,28 @@ const IonRangeSlider = function (element, initOptions= {}) {
         extra_classes: input.dataset.extraClasses,
     };
 
-    config_from_data.values = config_from_data.values && config_from_data.values.split(",");
+    config_from_data.values =
+        config_from_data.values && config_from_data.values.split(",");
 
     for (let prop in config_from_data) {
         if (config_from_data.hasOwnProperty(prop)) {
-            if (config_from_data[prop] === undefined || config_from_data[prop] === "") {
+            if (
+                config_from_data[prop] === undefined ||
+                config_from_data[prop] === ""
+            ) {
                 delete config_from_data[prop];
             }
         }
     }
 
-
     // input value extends default config
     let val = input.value;
     if (val !== undefined && val !== "") {
-        val = val.split(config_from_data.input_values_separator || options.input_values_separator || ";");
+        val = val.split(
+            config_from_data.input_values_separator ||
+                options.input_values_separator ||
+                ";"
+        );
 
         if (val[0] && val[0] == +val[0]) {
             val[0] = +val[0];
@@ -283,7 +291,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
 
         to: options.to,
         to_percent: 0,
-        to_value: null
+        to_value: null,
     };
 
     // HTML Templates
@@ -292,7 +300,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
         '<span class="irs-line" tabindex="0"></span>' +
         '<span class="irs-min">0</span><span class="irs-max">1</span>' +
         '<span class="irs-from">0</span><span class="irs-to">0</span><span class="irs-single">0</span>' +
-        '</span>' +
+        "</span>" +
         '<span class="irs-grid">1</span>';
 
     const single_html =
@@ -307,8 +315,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
         '<span class="irs-handle from"><i></i><i></i><i></i></span>' +
         '<span class="irs-handle to"><i></i><i></i><i></i></span>';
 
-    const disable_html =
-        '<span class="irs-disable-mask"></span>';
+    const disable_html = '<span class="irs-disable-mask"></span>';
 
     const init = function (is_update) {
         no_diapason = false;
@@ -337,13 +344,17 @@ const IonRangeSlider = function (element, initOptions= {}) {
         updateScene();
     };
 
-
     /**
      * Appends slider template to a DOM
      */
     const append = function () {
-        const container_html = '<span class="irs irs--' + options.skin + ' ' + options.extra_classes + '"></span>';
-        cache.input.insertAdjacentHTML('beforebegin', container_html);
+        const container_html =
+            '<span class="irs irs--' +
+            options.skin +
+            " " +
+            options.extra_classes +
+            '"></span>';
+        cache.input.insertAdjacentHTML("beforebegin", container_html);
         cache.input.setAttribute("readonly", "true");
         cache.cont = cache.input.previousElementSibling;
         result.slider = cache.cont;
@@ -359,7 +370,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
         cache.grid = cache.cont.querySelector(".irs-grid");
 
         if (options.type === "single") {
-            cache.cont.insertAdjacentHTML('beforeend', single_html);
+            cache.cont.insertAdjacentHTML("beforeend", single_html);
             cache.bar = cache.cont.querySelector(".irs-bar");
             cache.edge = cache.cont.querySelector(".irs-bar--single");
             cache.s_single = cache.cont.querySelector(".single");
@@ -367,7 +378,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
             cache.to.style.visibility = "hidden";
             cache.shad_single = cache.cont.querySelector(".shadow-single");
         } else {
-            cache.cont.insertAdjacentHTML('beforeend', double_html);
+            cache.cont.insertAdjacentHTML("beforeend", double_html);
             cache.bar = cache.cont.querySelector(".irs-bar");
             cache.s_from = cache.cont.querySelector(".from");
             cache.s_to = cache.cont.querySelector(".to");
@@ -446,8 +457,12 @@ const IonRangeSlider = function (element, initOptions= {}) {
                 cache.s_from.classList.remove("type_last");
                 break;
             case "both":
-                coords.p_gap_left = toFixed(coords.p_pointer - coords.p_from_fake);
-                coords.p_gap_right = toFixed(coords.p_to_fake - coords.p_pointer);
+                coords.p_gap_left = toFixed(
+                    coords.p_pointer - coords.p_from_fake
+                );
+                coords.p_gap_right = toFixed(
+                    coords.p_to_fake - coords.p_pointer
+                );
                 cache.s_to.classList.remove("type_last");
                 cache.s_from.classList.remove("type_last");
                 break;
@@ -458,7 +473,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
      * Then slider is disabled -> append extra layer with opacity
      */
     const appendDisableMask = function () {
-        cache.cont.insertAdjacentHTML('beforeend', disable_html);
+        cache.cont.insertAdjacentHTML("beforeend", disable_html);
         cache.cont.classList.add("irs-disabled");
     };
 
@@ -477,7 +492,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
         cache.cont.remove();
         cache.cont = null;
 
-        cache.win.removeEventListener("keydown", key.bind(this, 'keyboard'));
+        cache.win.removeEventListener("keydown", key.bind(this, "keyboard"));
         cache.body.removeEventListener("touchmove", pointerMove.bind(this));
         cache.body.removeEventListener("mousemove", pointerMove.bind(this));
         cache.win.removeEventListener("touchend", pointerUp.bind(this));
@@ -499,54 +514,149 @@ const IonRangeSlider = function (element, initOptions= {}) {
         if (no_diapason) {
             return;
         }
-        cache.body.addEventListener('touchmove', pointerMove.bind(this));
-        cache.body.addEventListener('mousemove', pointerMove.bind(this));
+        cache.body.addEventListener("touchmove", pointerMove.bind(this));
+        cache.body.addEventListener("mousemove", pointerMove.bind(this));
 
-        cache.win.addEventListener('touchend', pointerUp.bind(this));
-        cache.win.addEventListener('mouseup', pointerUp.bind(this));
+        cache.win.addEventListener("touchend", pointerUp.bind(this));
+        cache.win.addEventListener("mouseup", pointerUp.bind(this));
 
-        cache.line.addEventListener('touchstart', pointerClick.bind(this, 'click'), {passive: true});
-        cache.line.addEventListener('mousedown', pointerClick.bind(this, 'click'));
-        cache.line.addEventListener('focus', pointerFocus.bind(this));
+        cache.line.addEventListener(
+            "touchstart",
+            pointerClick.bind(this, "click"),
+            { passive: true }
+        );
+        cache.line.addEventListener(
+            "mousedown",
+            pointerClick.bind(this, "click")
+        );
+        cache.line.addEventListener("focus", pointerFocus.bind(this));
 
         if (options.drag_interval && options.type === "double") {
-            cache.bar.addEventListener('touchstart', pointerDown.bind(this, 'both'), {passive: true});
-            cache.bar.addEventListener('mousedown', pointerDown.bind(this, 'both'));
+            cache.bar.addEventListener(
+                "touchstart",
+                pointerDown.bind(this, "both"),
+                { passive: true }
+            );
+            cache.bar.addEventListener(
+                "mousedown",
+                pointerDown.bind(this, "both")
+            );
         } else {
-            cache.bar.addEventListener('touchstart', pointerClick.bind(this, 'click'), {passive: true});
-            cache.bar.addEventListener('mousedown', pointerClick.bind(this, 'click'));
+            cache.bar.addEventListener(
+                "touchstart",
+                pointerClick.bind(this, "click"),
+                { passive: true }
+            );
+            cache.bar.addEventListener(
+                "mousedown",
+                pointerClick.bind(this, "click")
+            );
         }
 
         if (options.type === "single") {
-            cache.single.addEventListener('touchstart', pointerDown.bind(this, 'single'), {passive: true});
-            cache.s_single.addEventListener('touchstart', pointerDown.bind(this, 'single'), {passive: true});
-            cache.shad_single.addEventListener('touchstart', pointerClick.bind(this, 'click'), {passive: true});
+            cache.single.addEventListener(
+                "touchstart",
+                pointerDown.bind(this, "single"),
+                { passive: true }
+            );
+            cache.s_single.addEventListener(
+                "touchstart",
+                pointerDown.bind(this, "single"),
+                { passive: true }
+            );
+            cache.shad_single.addEventListener(
+                "touchstart",
+                pointerClick.bind(this, "click"),
+                { passive: true }
+            );
 
-            cache.single.addEventListener('mousedown', pointerDown.bind(this, 'single'));
-            cache.s_single.addEventListener('mousedown', pointerDown.bind(this, 'single'));
-            cache.edge.addEventListener('mousedown', pointerClick.bind(this, 'click'));
-            cache.shad_single.addEventListener('touchstart', pointerClick.bind(this, 'click'), {passive: true});
+            cache.single.addEventListener(
+                "mousedown",
+                pointerDown.bind(this, "single")
+            );
+            cache.s_single.addEventListener(
+                "mousedown",
+                pointerDown.bind(this, "single")
+            );
+            cache.edge.addEventListener(
+                "mousedown",
+                pointerClick.bind(this, "click")
+            );
+            cache.shad_single.addEventListener(
+                "touchstart",
+                pointerClick.bind(this, "click"),
+                { passive: true }
+            );
         } else {
-            cache.single.addEventListener('touchstart', pointerDown.bind(this, null), {passive: true});
-            cache.single.addEventListener('mousedown', pointerDown.bind(this, null));
+            cache.single.addEventListener(
+                "touchstart",
+                pointerDown.bind(this, null),
+                { passive: true }
+            );
+            cache.single.addEventListener(
+                "mousedown",
+                pointerDown.bind(this, null)
+            );
 
-            cache.from.addEventListener('touchstart', pointerDown.bind(this, 'from'), {passive: true});
-            cache.s_from.addEventListener('touchstart', pointerDown.bind(this, 'from'), {passive: true});
-            cache.to.addEventListener('touchstart', pointerDown.bind(this, 'to'), {passive: true});
-            cache.s_to.addEventListener('touchstart', pointerDown.bind(this, 'to'), {passive: true});
-            cache.shad_from.addEventListener('touchstart', pointerClick.bind(this, 'click'), {passive: true});
-            cache.shad_to.addEventListener('touchstart', pointerClick.bind(this, 'click'), {passive: true});
+            cache.from.addEventListener(
+                "touchstart",
+                pointerDown.bind(this, "from"),
+                { passive: true }
+            );
+            cache.s_from.addEventListener(
+                "touchstart",
+                pointerDown.bind(this, "from"),
+                { passive: true }
+            );
+            cache.to.addEventListener(
+                "touchstart",
+                pointerDown.bind(this, "to"),
+                { passive: true }
+            );
+            cache.s_to.addEventListener(
+                "touchstart",
+                pointerDown.bind(this, "to"),
+                { passive: true }
+            );
+            cache.shad_from.addEventListener(
+                "touchstart",
+                pointerClick.bind(this, "click"),
+                { passive: true }
+            );
+            cache.shad_to.addEventListener(
+                "touchstart",
+                pointerClick.bind(this, "click"),
+                { passive: true }
+            );
 
-            cache.from.addEventListener('mousedown', pointerDown.bind(this, 'from'));
-            cache.s_from.addEventListener('mousedown', pointerDown.bind(this, 'from'));
-            cache.to.addEventListener('mousedown', pointerDown.bind(this, 'to'));
-            cache.s_to.addEventListener('mousedown', pointerDown.bind(this, 'to'));
-            cache.shad_from.addEventListener('mousedown', pointerClick.bind(this, 'click'));
-            cache.shad_to.addEventListener('mousedown', pointerClick.bind(this, 'click'));
+            cache.from.addEventListener(
+                "mousedown",
+                pointerDown.bind(this, "from")
+            );
+            cache.s_from.addEventListener(
+                "mousedown",
+                pointerDown.bind(this, "from")
+            );
+            cache.to.addEventListener(
+                "mousedown",
+                pointerDown.bind(this, "to")
+            );
+            cache.s_to.addEventListener(
+                "mousedown",
+                pointerDown.bind(this, "to")
+            );
+            cache.shad_from.addEventListener(
+                "mousedown",
+                pointerClick.bind(this, "click")
+            );
+            cache.shad_to.addEventListener(
+                "mousedown",
+                pointerClick.bind(this, "click")
+            );
         }
 
         if (options.keyboard) {
-            cache.line.addEventListener('keydown', key.bind(this, 'keyboard'));
+            cache.line.addEventListener("keydown", key.bind(this, "keyboard"));
         }
     };
 
@@ -566,8 +676,11 @@ const IonRangeSlider = function (element, initOptions= {}) {
             }
 
             x = $handle.getBoundingClientRect().left;
-            x += ($handle.getBoundingClientRect().width / 2) - 1;
-            pointerClick("single", {preventDefault: function () {}, pageX: x});
+            x += $handle.getBoundingClientRect().width / 2 - 1;
+            pointerClick("single", {
+                preventDefault: function () {},
+                pageX: x,
+            });
         } else {
             cache.line.focus();
         }
@@ -583,7 +696,9 @@ const IonRangeSlider = function (element, initOptions= {}) {
             return;
         }
 
-        const x = e.pageX || e.originalEvent.touches && e.originalEvent.touches[0].pageX; // TODO
+        const x =
+            e.pageX ||
+            (e.originalEvent.touches && e.originalEvent.touches[0].pageX); // TODO
         coords.x_pointer = x - coords.x_gap;
         calc();
     };
@@ -628,7 +743,9 @@ const IonRangeSlider = function (element, initOptions= {}) {
      */
     const pointerDown = function (destination, e) {
         e.preventDefault();
-        const x = e.pageX || e.originalEvent.touches && e.originalEvent.touches[0].pageX; // TODO
+        const x =
+            e.pageX ||
+            (e.originalEvent.touches && e.originalEvent.touches[0].pageX); // TODO
         if (e.button === 2) {
             return;
         }
@@ -666,7 +783,9 @@ const IonRangeSlider = function (element, initOptions= {}) {
      */
     const pointerClick = function (destination, e) {
         e.preventDefault();
-        const x = e.pageX || e.originalEvent.touches && e.originalEvent.touches[0].pageX; // TODO
+        const x =
+            e.pageX ||
+            (e.originalEvent.touches && e.originalEvent.touches[0].pageX); // TODO
         if (e.button === 2) {
             return;
         }
@@ -723,9 +842,9 @@ const IonRangeSlider = function (element, initOptions= {}) {
         let p = coords.p_pointer;
         const p_step = options.step / ((options.max - options.min) / 100);
 
-        right ? p += p_step : p -= p_step;
+        right ? (p += p_step) : (p -= p_step);
 
-        coords.x_pointer = toFixed(coords.w_rs / 100 * p);
+        coords.x_pointer = toFixed((coords.w_rs / 100) * p);
         is_key = true;
         calc();
     };
@@ -784,7 +903,6 @@ const IonRangeSlider = function (element, initOptions= {}) {
         }
     };
 
-
     // Calculations
 
     /**
@@ -813,7 +931,6 @@ const IonRangeSlider = function (element, initOptions= {}) {
         calcPointerPercent();
         let handle_x = getHandleX();
 
-
         if (target === "both") {
             coords.p_gap = 0;
             handle_x = getHandleX();
@@ -840,11 +957,25 @@ const IonRangeSlider = function (element, initOptions= {}) {
                 coords.p_from_real = toFixed(f);
                 coords.p_to_real = toFixed(t);
 
-                coords.p_single_real = checkDiapason(coords.p_single_real, options.from_min, options.from_max);
-                coords.p_from_real = checkDiapason(coords.p_from_real, options.from_min, options.from_max);
-                coords.p_to_real = checkDiapason(coords.p_to_real, options.to_min, options.to_max);
+                coords.p_single_real = checkDiapason(
+                    coords.p_single_real,
+                    options.from_min,
+                    options.from_max
+                );
+                coords.p_from_real = checkDiapason(
+                    coords.p_from_real,
+                    options.from_min,
+                    options.from_max
+                );
+                coords.p_to_real = checkDiapason(
+                    coords.p_to_real,
+                    options.to_min,
+                    options.to_max
+                );
 
-                coords.p_single_fake = convertToFakePercent(coords.p_single_real);
+                coords.p_single_fake = convertToFakePercent(
+                    coords.p_single_real
+                );
                 coords.p_from_fake = convertToFakePercent(coords.p_from_real);
                 coords.p_to_fake = convertToFakePercent(coords.p_to_real);
 
@@ -859,9 +990,15 @@ const IonRangeSlider = function (element, initOptions= {}) {
 
                 coords.p_single_real = convertToRealPercent(handle_x);
                 coords.p_single_real = calcWithStep(coords.p_single_real);
-                coords.p_single_real = checkDiapason(coords.p_single_real, options.from_min, options.from_max);
+                coords.p_single_real = checkDiapason(
+                    coords.p_single_real,
+                    options.from_min,
+                    options.from_max
+                );
 
-                coords.p_single_fake = convertToFakePercent(coords.p_single_real);
+                coords.p_single_fake = convertToFakePercent(
+                    coords.p_single_real
+                );
 
                 break;
 
@@ -875,9 +1012,21 @@ const IonRangeSlider = function (element, initOptions= {}) {
                 if (coords.p_from_real > coords.p_to_real) {
                     coords.p_from_real = coords.p_to_real;
                 }
-                coords.p_from_real = checkDiapason(coords.p_from_real, options.from_min, options.from_max);
-                coords.p_from_real = checkMinInterval(coords.p_from_real, coords.p_to_real, "from");
-                coords.p_from_real = checkMaxInterval(coords.p_from_real, coords.p_to_real, "from");
+                coords.p_from_real = checkDiapason(
+                    coords.p_from_real,
+                    options.from_min,
+                    options.from_max
+                );
+                coords.p_from_real = checkMinInterval(
+                    coords.p_from_real,
+                    coords.p_to_real,
+                    "from"
+                );
+                coords.p_from_real = checkMaxInterval(
+                    coords.p_from_real,
+                    coords.p_to_real,
+                    "from"
+                );
 
                 coords.p_from_fake = convertToFakePercent(coords.p_from_real);
 
@@ -893,9 +1042,21 @@ const IonRangeSlider = function (element, initOptions= {}) {
                 if (coords.p_to_real < coords.p_from_real) {
                     coords.p_to_real = coords.p_from_real;
                 }
-                coords.p_to_real = checkDiapason(coords.p_to_real, options.to_min, options.to_max);
-                coords.p_to_real = checkMinInterval(coords.p_to_real, coords.p_from_real, "to");
-                coords.p_to_real = checkMaxInterval(coords.p_to_real, coords.p_from_real, "to");
+                coords.p_to_real = checkDiapason(
+                    coords.p_to_real,
+                    options.to_min,
+                    options.to_max
+                );
+                coords.p_to_real = checkMinInterval(
+                    coords.p_to_real,
+                    coords.p_from_real,
+                    "to"
+                );
+                coords.p_to_real = checkMaxInterval(
+                    coords.p_to_real,
+                    coords.p_from_real,
+                    "to"
+                );
 
                 coords.p_to_fake = convertToFakePercent(coords.p_to_real);
 
@@ -906,18 +1067,36 @@ const IonRangeSlider = function (element, initOptions= {}) {
                     break;
                 }
 
-                handle_x = toFixed(handle_x + (coords.p_handle * 0.001));
+                handle_x = toFixed(handle_x + coords.p_handle * 0.001);
 
-                coords.p_from_real = convertToRealPercent(handle_x) - coords.p_gap_left;
+                coords.p_from_real =
+                    convertToRealPercent(handle_x) - coords.p_gap_left;
                 coords.p_from_real = calcWithStep(coords.p_from_real);
-                coords.p_from_real = checkDiapason(coords.p_from_real, options.from_min, options.from_max);
-                coords.p_from_real = checkMinInterval(coords.p_from_real, coords.p_to_real, "from");
+                coords.p_from_real = checkDiapason(
+                    coords.p_from_real,
+                    options.from_min,
+                    options.from_max
+                );
+                coords.p_from_real = checkMinInterval(
+                    coords.p_from_real,
+                    coords.p_to_real,
+                    "from"
+                );
                 coords.p_from_fake = convertToFakePercent(coords.p_from_real);
 
-                coords.p_to_real = convertToRealPercent(handle_x) + coords.p_gap_right;
+                coords.p_to_real =
+                    convertToRealPercent(handle_x) + coords.p_gap_right;
                 coords.p_to_real = calcWithStep(coords.p_to_real);
-                coords.p_to_real = checkDiapason(coords.p_to_real, options.to_min, options.to_max);
-                coords.p_to_real = checkMinInterval(coords.p_to_real, coords.p_from_real, "to");
+                coords.p_to_real = checkDiapason(
+                    coords.p_to_real,
+                    options.to_min,
+                    options.to_max
+                );
+                coords.p_to_real = checkMinInterval(
+                    coords.p_to_real,
+                    coords.p_from_real,
+                    "to"
+                );
                 coords.p_to_fake = convertToFakePercent(coords.p_to_real);
 
                 break;
@@ -946,18 +1125,26 @@ const IonRangeSlider = function (element, initOptions= {}) {
                 }
 
                 coords.p_from_real = calcWithStep(new_from);
-                coords.p_from_real = checkDiapason(coords.p_from_real, options.from_min, options.from_max);
+                coords.p_from_real = checkDiapason(
+                    coords.p_from_real,
+                    options.from_min,
+                    options.from_max
+                );
                 coords.p_from_fake = convertToFakePercent(coords.p_from_real);
 
                 coords.p_to_real = calcWithStep(new_to);
-                coords.p_to_real = checkDiapason(coords.p_to_real, options.to_min, options.to_max);
+                coords.p_to_real = checkDiapason(
+                    coords.p_to_real,
+                    options.to_min,
+                    options.to_max
+                );
                 coords.p_to_fake = convertToFakePercent(coords.p_to_real);
 
                 break;
         }
 
         if (options.type === "single") {
-            coords.p_bar_x = (coords.p_handle / 2);
+            coords.p_bar_x = coords.p_handle / 2;
             coords.p_bar_w = coords.p_single_fake;
 
             result.from_percent = coords.p_single_real;
@@ -968,7 +1155,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
                 result.from_value = options.values[result.from];
             }
         } else {
-            coords.p_bar_x = toFixed(coords.p_from_fake + (coords.p_handle / 2));
+            coords.p_bar_x = toFixed(coords.p_from_fake + coords.p_handle / 2);
             coords.p_bar_w = toFixed(coords.p_to_fake - coords.p_from_fake);
             result.from_percent = coords.p_from_real;
             result.from = convertToValue(coords.p_from_real);
@@ -987,7 +1174,6 @@ const IonRangeSlider = function (element, initOptions= {}) {
         calcLabels();
     };
 
-
     /**
      * calculates pointer X in percent
      */
@@ -1003,18 +1189,18 @@ const IonRangeSlider = function (element, initOptions= {}) {
             coords.x_pointer = coords.w_rs;
         }
 
-        coords.p_pointer = toFixed(coords.x_pointer / coords.w_rs * 100);
+        coords.p_pointer = toFixed((coords.x_pointer / coords.w_rs) * 100);
     };
 
     // TODO refactor next 2 functions
     const convertToRealPercent = function (fake) {
         const full = 100 - coords.p_handle;
-        return fake / full * 100;
+        return (fake / full) * 100;
     };
 
     const convertToFakePercent = function (real) {
         const full = 100 - coords.p_handle;
-        return real / 100 * full;
+        return (real / 100) * full;
     };
 
     const getHandleX = function () {
@@ -1037,7 +1223,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
             coords.w_handle = cache.s_from.offsetWidth;
         }
 
-        coords.p_handle = toFixed(coords.w_handle / coords.w_rs * 100);
+        coords.p_handle = toFixed((coords.w_handle / coords.w_rs) * 100);
     };
 
     /**
@@ -1050,7 +1236,9 @@ const IonRangeSlider = function (element, initOptions= {}) {
         if (options.type === "single") {
             return "single";
         } else {
-            const m_point = coords.p_from_real + ((coords.p_to_real - coords.p_from_real) / 2);
+            const m_point =
+                coords.p_from_real +
+                (coords.p_to_real - coords.p_from_real) / 2;
             if (real_x >= m_point) {
                 return options.to_fixed ? "from" : "to";
             } else {
@@ -1067,8 +1255,8 @@ const IonRangeSlider = function (element, initOptions= {}) {
             return;
         }
 
-        labels.p_min = labels.w_min / coords.w_rs * 100;
-        labels.p_max = labels.w_max / coords.w_rs * 100;
+        labels.p_min = (labels.w_min / coords.w_rs) * 100;
+        labels.p_max = (labels.w_max / coords.w_rs) * 100;
     };
 
     /**
@@ -1081,29 +1269,45 @@ const IonRangeSlider = function (element, initOptions= {}) {
 
         if (options.type === "single") {
             labels.w_single = cache.single.offsetWidth;
-            labels.p_single_fake = labels.w_single / coords.w_rs * 100;
-            labels.p_single_left = coords.p_single_fake + (coords.p_handle / 2) - (labels.p_single_fake / 2);
-            labels.p_single_left = checkEdges(labels.p_single_left, labels.p_single_fake);
-
+            labels.p_single_fake = (labels.w_single / coords.w_rs) * 100;
+            labels.p_single_left =
+                coords.p_single_fake +
+                coords.p_handle / 2 -
+                labels.p_single_fake / 2;
+            labels.p_single_left = checkEdges(
+                labels.p_single_left,
+                labels.p_single_fake
+            );
         } else {
             labels.w_from = cache.from.offsetWidth;
-            labels.p_from_fake = labels.w_from / coords.w_rs * 100;
-            labels.p_from_left = coords.p_from_fake + (coords.p_handle / 2) - (labels.p_from_fake / 2);
+            labels.p_from_fake = (labels.w_from / coords.w_rs) * 100;
+            labels.p_from_left =
+                coords.p_from_fake +
+                coords.p_handle / 2 -
+                labels.p_from_fake / 2;
             labels.p_from_left = toFixed(labels.p_from_left);
-            labels.p_from_left = checkEdges(labels.p_from_left, labels.p_from_fake);
+            labels.p_from_left = checkEdges(
+                labels.p_from_left,
+                labels.p_from_fake
+            );
 
             labels.w_to = cache.to.offsetWidth;
-            labels.p_to_fake = labels.w_to / coords.w_rs * 100;
-            labels.p_to_left = coords.p_to_fake + (coords.p_handle / 2) - (labels.p_to_fake / 2);
+            labels.p_to_fake = (labels.w_to / coords.w_rs) * 100;
+            labels.p_to_left =
+                coords.p_to_fake + coords.p_handle / 2 - labels.p_to_fake / 2;
             labels.p_to_left = toFixed(labels.p_to_left);
             labels.p_to_left = checkEdges(labels.p_to_left, labels.p_to_fake);
 
             labels.w_single = cache.single.offsetWidth;
-            labels.p_single_fake = labels.w_single / coords.w_rs * 100;
-            labels.p_single_left = ((labels.p_from_left + labels.p_to_left + labels.p_to_fake) / 2) - (labels.p_single_fake / 2);
+            labels.p_single_fake = (labels.w_single / coords.w_rs) * 100;
+            labels.p_single_left =
+                (labels.p_from_left + labels.p_to_left + labels.p_to_fake) / 2 -
+                labels.p_single_fake / 2;
             labels.p_single_left = toFixed(labels.p_single_left);
-            labels.p_single_left = checkEdges(labels.p_single_left, labels.p_single_fake);
-
+            labels.p_single_left = checkEdges(
+                labels.p_single_left,
+                labels.p_single_fake
+            );
         }
     };
 
@@ -1170,7 +1374,12 @@ const IonRangeSlider = function (element, initOptions= {}) {
             return;
         }
 
-        if (old_from !== result.from || old_to !== result.to || force_redraw || is_key) {
+        if (
+            old_from !== result.from ||
+            old_to !== result.to ||
+            force_redraw ||
+            is_key
+        ) {
             drawLabels();
 
             cache.bar.style.left = coords.p_bar_x + "%";
@@ -1199,7 +1408,10 @@ const IonRangeSlider = function (element, initOptions= {}) {
 
             writeToInput();
 
-            if ((old_from !== result.from || old_to !== result.to) && !is_start) {
+            if (
+                (old_from !== result.from || old_to !== result.to) &&
+                !is_start
+            ) {
                 cache.input.dispatchEvent(new Event("change"));
                 cache.input.dispatchEvent(new Event("input"));
             }
@@ -1240,18 +1452,13 @@ const IonRangeSlider = function (element, initOptions= {}) {
 
         const values_num = options.values.length,
             p_values = options.p_values;
-        let text_single,
-            text_from,
-            text_to,
-            from_pretty,
-            to_pretty;
+        let text_single, text_from, text_to, from_pretty, to_pretty;
 
         if (options.hide_from_to) {
             return;
         }
 
         if (options.type === "single") {
-
             if (values_num) {
                 text_single = decorate(p_values[result.from]);
                 cache.single.innerHTML = text_single;
@@ -1270,28 +1477,32 @@ const IonRangeSlider = function (element, initOptions= {}) {
                 cache.min.style.visibility = "visible";
             }
 
-            if (labels.p_single_left + labels.p_single_fake > 100 - labels.p_max - 1) {
+            if (
+                labels.p_single_left + labels.p_single_fake >
+                100 - labels.p_max - 1
+            ) {
                 cache.max.style.visibility = "hidden";
             } else {
                 cache.max.style.visibility = "visible";
             }
-
         } else {
             if (values_num) {
-
                 if (options.decorate_both) {
                     text_single = decorate(p_values[result.from]);
                     text_single += options.values_separator;
                     text_single += decorate(p_values[result.to]);
                 } else {
-                    text_single = decorate(p_values[result.from] + options.values_separator + p_values[result.to]);
+                    text_single = decorate(
+                        p_values[result.from] +
+                            options.values_separator +
+                            p_values[result.to]
+                    );
                 }
                 text_from = decorate(p_values[result.from]);
                 text_to = decorate(p_values[result.to]);
                 cache.single.innerHTML = text_single;
                 cache.from.innerHTML = text_from;
                 cache.to.innerHTML = text_to;
-
             } else {
                 from_pretty = _prettify(result.from);
                 to_pretty = _prettify(result.to);
@@ -1301,7 +1512,10 @@ const IonRangeSlider = function (element, initOptions= {}) {
                     text_single += options.values_separator;
                     text_single += decorate(to_pretty, result.to);
                 } else {
-                    text_single = decorate(from_pretty + options.values_separator + to_pretty, result.to);
+                    text_single = decorate(
+                        from_pretty + options.values_separator + to_pretty,
+                        result.to
+                    );
                 }
                 text_from = decorate(from_pretty, result.from);
                 text_to = decorate(to_pretty, result.to);
@@ -1309,7 +1523,6 @@ const IonRangeSlider = function (element, initOptions= {}) {
                 cache.single.innerHTML = text_single;
                 cache.from.innerHTML = text_from;
                 cache.to.innerHTML = text_to;
-
             }
 
             calcLabels();
@@ -1346,8 +1559,12 @@ const IonRangeSlider = function (element, initOptions= {}) {
                 cache.single.style.visibility = "hidden";
             }
 
-            min < labels.p_min + 1 ? cache.min.style.visibility = "hidden" : cache.min.style.visibility = "visible";
-            max > 100 - labels.p_max - 1 ? cache.max.style.visibility = "hidden" : cache.max.style.visibility = "visible";
+            min < labels.p_min + 1
+                ? (cache.min.style.visibility = "hidden")
+                : (cache.min.style.visibility = "visible");
+            max > 100 - labels.p_max - 1
+                ? (cache.max.style.visibility = "hidden")
+                : (cache.max.style.visibility = "visible");
         }
     };
 
@@ -1357,24 +1574,26 @@ const IonRangeSlider = function (element, initOptions= {}) {
     const drawShadow = function () {
         const o = options,
             c = cache,
-
             is_from_min = typeof o.from_min === "number" && !isNaN(o.from_min),
             is_from_max = typeof o.from_max === "number" && !isNaN(o.from_max),
             is_to_min = typeof o.to_min === "number" && !isNaN(o.to_min),
             is_to_max = typeof o.to_max === "number" && !isNaN(o.to_max);
 
-        let from_min,
-            from_max,
-            to_min,
-            to_max;
+        let from_min, from_max, to_min, to_max;
 
         if (o.type === "single") {
             if (o.from_shadow && (is_from_min || is_from_max)) {
                 from_min = convertToPercent(is_from_min ? o.from_min : o.min);
-                from_max = convertToPercent(is_from_max ? o.from_max : o.max) - from_min;
-                from_min = toFixed(from_min - (coords.p_handle / 100 * from_min));
-                from_max = toFixed(from_max - (coords.p_handle / 100 * from_max));
-                from_min = from_min + (coords.p_handle / 2);
+                from_max =
+                    convertToPercent(is_from_max ? o.from_max : o.max) -
+                    from_min;
+                from_min = toFixed(
+                    from_min - (coords.p_handle / 100) * from_min
+                );
+                from_max = toFixed(
+                    from_max - (coords.p_handle / 100) * from_max
+                );
+                from_min = from_min + coords.p_handle / 2;
 
                 c.shad_single.style.display = "block";
                 c.shad_single.style.left = from_min + "%";
@@ -1385,10 +1604,16 @@ const IonRangeSlider = function (element, initOptions= {}) {
         } else {
             if (o.from_shadow && (is_from_min || is_from_max)) {
                 from_min = convertToPercent(is_from_min ? o.from_min : o.min);
-                from_max = convertToPercent(is_from_max ? o.from_max : o.max) - from_min;
-                from_min = toFixed(from_min - (coords.p_handle / 100 * from_min));
-                from_max = toFixed(from_max - (coords.p_handle / 100 * from_max));
-                from_min = from_min + (coords.p_handle / 2);
+                from_max =
+                    convertToPercent(is_from_max ? o.from_max : o.max) -
+                    from_min;
+                from_min = toFixed(
+                    from_min - (coords.p_handle / 100) * from_min
+                );
+                from_max = toFixed(
+                    from_max - (coords.p_handle / 100) * from_max
+                );
+                from_min = from_min + coords.p_handle / 2;
 
                 c.shad_from.style.display = "block";
                 c.shad_from.style.left = from_min + "%";
@@ -1399,10 +1624,11 @@ const IonRangeSlider = function (element, initOptions= {}) {
 
             if (o.to_shadow && (is_to_min || is_to_max)) {
                 to_min = convertToPercent(is_to_min ? o.to_min : o.min);
-                to_max = convertToPercent(is_to_max ? o.to_max : o.max) - to_min;
-                to_min = toFixed(to_min - (coords.p_handle / 100 * to_min));
-                to_max = toFixed(to_max - (coords.p_handle / 100 * to_max));
-                to_min = to_min + (coords.p_handle / 2);
+                to_max =
+                    convertToPercent(is_to_max ? o.to_max : o.max) - to_min;
+                to_min = toFixed(to_min - (coords.p_handle / 100) * to_min);
+                to_max = toFixed(to_max - (coords.p_handle / 100) * to_max);
+                to_min = to_min + coords.p_handle / 2;
 
                 c.shad_to.style.display = "block";
                 c.shad_to.style.left = to_min + "%";
@@ -1412,7 +1638,6 @@ const IonRangeSlider = function (element, initOptions= {}) {
             }
         }
     };
-
 
     /**
      * Write values to input element
@@ -1427,9 +1652,17 @@ const IonRangeSlider = function (element, initOptions= {}) {
             cache.input.dataset.from = result.from;
         } else {
             if (options.values.length) {
-                cache.input.setAttribute("value", result.from_value + options.input_values_separator + result.to_value);
+                cache.input.setAttribute(
+                    "value",
+                    result.from_value +
+                        options.input_values_separator +
+                        result.to_value
+                );
             } else {
-                cache.input.setAttribute("value", result.from + options.input_values_separator + result.to);
+                cache.input.setAttribute(
+                    "value",
+                    result.from + options.input_values_separator + result.to
+                );
             }
             cache.input.dataset.from = result.from;
             cache.input.dataset.to = result.to;
@@ -1507,7 +1740,8 @@ const IonRangeSlider = function (element, initOptions= {}) {
     const convertToPercent = function (value, no_min) {
         let diapason = options.max - options.min,
             one_percent = diapason / 100,
-            val, percent;
+            val,
+            percent;
 
         if (!diapason) {
             no_diapason = true;
@@ -1536,7 +1770,8 @@ const IonRangeSlider = function (element, initOptions= {}) {
             max = options.max,
             min_decimals = min.toString().split(".")[1],
             max_decimals = max.toString().split(".")[1],
-            min_length, max_length,
+            min_length,
+            max_length,
             avg_decimals = 0,
             abs = 0;
 
@@ -1547,7 +1782,6 @@ const IonRangeSlider = function (element, initOptions= {}) {
             return options.max;
         }
 
-
         if (min_decimals) {
             min_length = min_decimals.length;
             avg_decimals = min_length;
@@ -1557,7 +1791,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
             avg_decimals = max_length;
         }
         if (min_length && max_length) {
-            avg_decimals = (min_length >= max_length) ? min_length : max_length;
+            avg_decimals = min_length >= max_length ? min_length : max_length;
         }
 
         if (min < 0) {
@@ -1566,7 +1800,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
             max = +(max + abs).toFixed(avg_decimals);
         }
 
-        let number = ((max - min) / 100 * percent) + min,
+        let number = ((max - min) / 100) * percent + min,
             string = options.step.toString().split(".")[1],
             result;
 
@@ -1583,7 +1817,9 @@ const IonRangeSlider = function (element, initOptions= {}) {
             number -= abs;
         }
 
-        string ? result = +number.toFixed(string.length) : result = toFixed(number);
+        string
+            ? (result = +number.toFixed(string.length))
+            : (result = toFixed(number));
 
         if (result < options.min) {
             result = options.min;
@@ -1614,7 +1850,9 @@ const IonRangeSlider = function (element, initOptions= {}) {
     };
 
     const checkMinInterval = function (p_current, p_next, type) {
-        let o = options, current, next;
+        let o = options,
+            current,
+            next;
 
         if (!o.min_interval) {
             return p_current;
@@ -1637,7 +1875,9 @@ const IonRangeSlider = function (element, initOptions= {}) {
     };
 
     const checkMaxInterval = function (p_current, p_next, type) {
-        let o = options, current, next;
+        let o = options,
+            current,
+            next;
 
         if (!o.max_interval) {
             return p_current;
@@ -1662,11 +1902,11 @@ const IonRangeSlider = function (element, initOptions= {}) {
     const checkDiapason = function (p_num, min, max) {
         let num = convertToValue(p_num);
 
-        typeof min !== 'number' ? min = options.min : min;
-        typeof max !== 'number' ? max = options.max : max;
+        typeof min !== "number" ? (min = options.min) : min;
+        typeof max !== "number" ? (max = options.max) : max;
 
-        num < min ? num = min : num;
-        num > max ? num = max : num;
+        num < min ? (num = min) : num;
+        num > max ? (num = max) : num;
 
         return convertToPercent(num);
     };
@@ -1689,13 +1929,22 @@ const IonRangeSlider = function (element, initOptions= {}) {
     };
 
     const prettify = function (num) {
-        return num.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1" + options.prettify_separator);
+        return num
+            .toString()
+            .replace(
+                /(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,
+                "$1" + options.prettify_separator
+            );
     };
 
     const checkEdges = function (left, width) {
         if (!options.force_edges) return toFixed(left);
 
-        left < 0 ? left = 0 : left > 100 - width ? left = 100 - width : left;
+        left < 0
+            ? (left = 0)
+            : left > 100 - width
+            ? (left = 100 - width)
+            : left;
 
         return toFixed(left);
     };
@@ -1761,22 +2010,24 @@ const IonRangeSlider = function (element, initOptions= {}) {
             if (o.to > o.max) o.to = o.max;
 
             if (update_check.from) {
-
                 if (update_check.from !== o.from) {
                     if (o.from > o.to) o.from = o.to;
                 }
                 if (update_check.to !== o.to) {
                     if (o.to < o.from) o.to = o.from;
                 }
-
             }
 
             if (o.from > o.to) o.from = o.to;
             if (o.to < o.from) o.to = o.from;
-
         }
 
-        if (typeof o.step !== "number" || isNaN(o.step) || !o.step || o.step < 0) {
+        if (
+            typeof o.step !== "number" ||
+            isNaN(o.step) ||
+            !o.step ||
+            o.step < 0
+        ) {
             o.step = 1;
         }
 
@@ -1803,11 +2054,21 @@ const IonRangeSlider = function (element, initOptions= {}) {
             if (r.to < r.min || r.to > r.max) r.to = o.to;
         }
 
-        if (typeof o.min_interval !== "number" || isNaN(o.min_interval) || !o.min_interval || o.min_interval < 0) {
+        if (
+            typeof o.min_interval !== "number" ||
+            isNaN(o.min_interval) ||
+            !o.min_interval ||
+            o.min_interval < 0
+        ) {
             o.min_interval = 0;
         }
 
-        if (typeof o.max_interval !== "number" || isNaN(o.max_interval) || !o.max_interval || o.max_interval < 0) {
+        if (
+            typeof o.max_interval !== "number" ||
+            isNaN(o.max_interval) ||
+            !o.max_interval ||
+            o.max_interval < 0
+        ) {
             o.max_interval = 0;
         }
 
@@ -1884,21 +2145,18 @@ const IonRangeSlider = function (element, initOptions= {}) {
         }
 
         let o = options,
-            i, z,
-
+            i,
+            z,
             total = o.max - o.min,
             big_num = o.grid_num,
             big_p = 0,
             big_w = 0,
-
             small_max = 4,
             local_small_max,
             small_p,
             small_w = 0,
-
             result,
-            html = '';
-
+            html = "";
 
         calcGridMargin();
 
@@ -1932,19 +2190,25 @@ const IonRangeSlider = function (element, initOptions= {}) {
             }
             coords.big[i] = big_w;
 
-            small_p = (big_w - (big_p * (i - 1))) / (local_small_max + 1);
+            small_p = (big_w - big_p * (i - 1)) / (local_small_max + 1);
 
             for (z = 1; z <= local_small_max; z++) {
                 if (big_w === 0) {
                     break;
                 }
 
-                small_w = toFixed(big_w - (small_p * z));
+                small_w = toFixed(big_w - small_p * z);
 
-                html += '<span class="irs-grid-pol small" style="left: ' + small_w + '%"></span>';
+                html +=
+                    '<span class="irs-grid-pol small" style="left: ' +
+                    small_w +
+                    '%"></span>';
             }
 
-            html += '<span class="irs-grid-pol" style="left: ' + big_w + '%"></span>';
+            html +=
+                '<span class="irs-grid-pol" style="left: ' +
+                big_w +
+                '%"></span>';
 
             result = convertToValue(big_w);
             if (o.values.length) {
@@ -1953,7 +2217,14 @@ const IonRangeSlider = function (element, initOptions= {}) {
                 result = _prettify(result);
             }
 
-            html += '<span class="irs-grid-text js-grid-text-' + i + '" style="left: ' + big_w + '%">' + result + '</span>';
+            html +=
+                '<span class="irs-grid-text js-grid-text-' +
+                i +
+                '" style="left: ' +
+                big_w +
+                '%">' +
+                result +
+                "</span>";
         }
         coords.big_num = Math.ceil(big_num + 1);
 
@@ -1964,18 +2235,21 @@ const IonRangeSlider = function (element, initOptions= {}) {
 
     const cacheGridLabels = function () {
         for (let i = 0; i < coords.big_num; i++) {
-            cache.grid_labels.push(cache.grid.querySelector(".js-grid-text-" + i));
+            cache.grid_labels.push(
+                cache.grid.querySelector(".js-grid-text-" + i)
+            );
         }
 
         calcGridLabels();
     };
 
     const calcGridLabels = function () {
-        const start = [], finish = [],
+        const start = [],
+            finish = [],
             num = coords.big_num;
         for (let i = 0; i < num; i++) {
             coords.big_w[i] = cache.grid_labels[i].offsetWidth;
-            coords.big_p[i] = toFixed(coords.big_w[i] / coords.w_rs * 100);
+            coords.big_p[i] = toFixed((coords.big_w[i] / coords.w_rs) * 100);
             coords.big_x[i] = toFixed(coords.big_p[i] / 2);
 
             start[i] = toFixed(coords.big[i] - coords.big_x[i]);
@@ -1992,9 +2266,13 @@ const IonRangeSlider = function (element, initOptions= {}) {
 
             if (finish[num - 1] > 100 + coords.grid_gap) {
                 finish[num - 1] = 100 + coords.grid_gap;
-                start[num - 1] = toFixed(finish[num - 1] - coords.big_p[num - 1]);
+                start[num - 1] = toFixed(
+                    finish[num - 1] - coords.big_p[num - 1]
+                );
 
-                coords.big_x[num - 1] = toFixed(coords.big_p[num - 1] - coords.grid_gap);
+                coords.big_x[num - 1] = toFixed(
+                    coords.big_p[num - 1] - coords.grid_gap
+                );
             }
         }
 
@@ -2015,7 +2293,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
         const num = coords.big_num;
 
         for (let i = 0; i < num; i += step) {
-            let next_i = i + (step / 2);
+            let next_i = i + step / 2;
             if (next_i >= num) {
                 break;
             }
@@ -2044,8 +2322,8 @@ const IonRangeSlider = function (element, initOptions= {}) {
         } else {
             coords.w_handle = cache.s_from.offsetWidth;
         }
-        coords.p_handle = toFixed(coords.w_handle / coords.w_rs * 100);
-        coords.grid_gap = toFixed((coords.p_handle / 2) - 0.1);
+        coords.p_handle = toFixed((coords.w_handle / coords.w_rs) * 100);
+        coords.grid_gap = toFixed(coords.p_handle / 2 - 0.1);
 
         cache.grid.style.width = toFixed(100 - coords.p_handle) + "%";
         cache.grid.style.left = coords.grid_gap + "%";
@@ -2064,7 +2342,7 @@ const IonRangeSlider = function (element, initOptions= {}) {
         update_check.from = result.from;
         update_check.to = result.to;
 
-        options =  Object.assign(options, newOptions);
+        options = Object.assign(options, newOptions);
         validate();
         updateResult(newOptions);
 
@@ -2093,19 +2371,19 @@ const IonRangeSlider = function (element, initOptions= {}) {
         remove();
         input = null;
         options = null;
-    }
+    };
 
     return {
-        update: function(options) {
+        update: function (options) {
             update(options);
         },
-        reset : function() {
+        reset: function () {
             reset();
         },
-        destroy : function() {
+        destroy: function () {
             destroy();
         },
-        init : function () {
+        init: function () {
             validate();
             init();
 
@@ -2121,9 +2399,11 @@ const IonRangeSlider = function (element, initOptions= {}) {
  * @param options {Object}
  */
 function ionRangeSlider(element, options = null) {
-    if (typeof element === 'string') {
+    if (typeof element === "string") {
         element = document.querySelector(element);
     }
 
     return new IonRangeSlider(element, options).init();
 }
+
+export default ionRangeSlider;
